@@ -8,10 +8,14 @@ import (
 	"golang.org/x/net/context"
 )
 
+// NewConfirmCallback creates a GUI based confirmation to use as selfupdate callback
 func NewConfirmCallback(win fyne.Window) func(string) bool {
 	return NewConfirmCallbackWithTimeout(win, 0)
 }
 
+// NewConfirmCallbackWithTimeout creates a GUI based confirmation callback
+// with a timeout, after which time the question will be confirmed.
+// This can assist in a "default to yes" update where computer may be unattended.
 func NewConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration) func(string) bool {
 	return func(info string) bool {
 		var cancel func()
@@ -26,7 +30,7 @@ func NewConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration) func(
 				resp <- true
 			}()
 		}
-		d = dialog.NewConfirm("Application Update", info + "\n\nDo you wish to update?\n", func(ok bool) {
+		d = dialog.NewConfirm("Application Update", info+"\n\nDo you wish to update?\n", func(ok bool) {
 			if cancel != nil {
 				cancel()
 			}
@@ -34,7 +38,6 @@ func NewConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration) func(
 		}, win)
 
 		d.Show()
-		return <- resp
+		return <-resp
 	}
 }
-
