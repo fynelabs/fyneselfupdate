@@ -11,8 +11,10 @@ func NewProgressCallback(win fyne.Window) func(float64, error) {
 	return func(done float64, fail error) {
 		if d == nil {
 			if done < 0 {
+				//lint:ignore SA1019 upstream will provide a better solution
 				d = dialog.NewProgressInfinite("Application update", "Downloading update", win)
 			} else {
+				//lint:ignore SA1019 upstream will provide a better solution
 				d = dialog.NewProgress("Application update", "Downloading update", win)
 			}
 			d.Show()
@@ -30,6 +32,7 @@ func NewProgressCallback(win fyne.Window) func(float64, error) {
 			return
 		}
 
+		//lint:ignore SA1019 here until upstream replaces
 		if progress, ok := d.(*dialog.ProgressDialog); ok {
 			progress.SetValue(done)
 		}
