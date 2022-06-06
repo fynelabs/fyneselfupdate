@@ -19,7 +19,6 @@ func NewExitCallback(app fyne.App, win fyne.Window) func(err error) {
 				dialog.ShowError(err, win)
 				return
 			}
-			win.Hide()
 			app.Quit()
 		}
 	}
