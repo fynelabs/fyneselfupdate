@@ -64,7 +64,7 @@ func NewRestartConfirmCallbackWithTimeout(win fyne.Window, defaultRestart bool, 
 				resp <- defaultRestart
 			}()
 		}
-		d = dialog.NewConfirm("Application Update", "Do you wish to restart this application?\n", func(ok bool) {
+		d = dialog.NewConfirm("Application Update", "The application was updated.\nDo you wish to restart it?\n", func(ok bool) {
 			if cancel != nil {
 				cancel()
 			}
