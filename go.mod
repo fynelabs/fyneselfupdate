@@ -7,4 +7,4 @@ require (
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4
 )
 
-require github.com/stretchr/testify v1.7.1 // indirect
+require github.com/fynelabs/selfupdate v0.0.0-20220603194016-1a68b05d3b4a
