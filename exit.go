@@ -7,15 +7,13 @@ import (
 	"fyne.io/fyne/v2/dialog"
 )
 
-// NewExitCallback properly exit a Fyne App. If a window is specified, it will Hide
-// the window first before exiting. It will also report error using dialog.ShowError
-// if the upgrade failed to Restart. If no window is specified, it will display error
-// on the command line.
+// NewExitCallback properly exit a Fyne App. If a window is specified, it will report
+// error using dialog.ShowError if the upgrade failed to Restart. If no window is
+// specified, it will display error on the command line.
 func NewExitCallback(app fyne.App, win fyne.Window) func(err error) {
 	if win != nil {
 		return func(err error) {
 			if err != nil {
-				win.Show()
 				dialog.ShowError(err, win)
 				return
 			}

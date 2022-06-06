@@ -69,9 +69,6 @@ func NewRestartConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration
 				cancel()
 			}
 			resp <- ok
-			if ok {
-				win.Hide()
-			}
 		}, win)
 
 		d.Show()
