@@ -8,15 +8,15 @@ import (
 	"golang.org/x/net/context"
 )
 
-// NewConfirmCallback creates a GUI based confirmation to use as selfupdate callback
-func NewConfirmCallback(win fyne.Window) func(string) bool {
-	return NewConfirmCallbackWithTimeout(win, 0)
+// NewUpgradeConfirmCallback creates a GUI based confirmation to use as selfupdate callback
+func NewUpgradeConfirmCallback(win fyne.Window) func(string) bool {
+	return NewUpgradeConfirmCallbackWithTimeout(win, 0)
 }
 
-// NewConfirmCallbackWithTimeout creates a GUI based confirmation callback
+// NewUpgradeConfirmCallbackWithTimeout creates a GUI based confirmation callback
 // with a timeout, after which time the question will be confirmed.
 // This can assist in a "default to yes" update where computer may be unattended.
-func NewConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration) func(string) bool {
+func NewUpgradeConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration) func(string) bool {
 	return func(info string) bool {
 		var cancel func()
 		var d dialog.Dialog
@@ -44,13 +44,13 @@ func NewConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration) func(
 
 // NewRestartConfirmCallback create a GUI based confirmation to approve restarting the application after being updated
 func NewRestartConfirmCallback(win fyne.Window) func() bool {
-	return NewRestartConfirmCallbackWithTimeout(win, false, 0)
+	return NewRestartConfirmCallbackWithTimeout(win, 0)
 }
 
 // NewRestartConfirmCallbackWithTimeout creates a GUI based restarting confirmation callback
-// with a timeout, after which time the question will be confirmed if defaultRestart is true.
+// with a timeout, after which time the question will be confirmed to yes.
 // This can assist in a "default to yes" update where computer may be unattended.
-func NewRestartConfirmCallbackWithTimeout(win fyne.Window, defaultRestart bool, timeout time.Duration) func() bool {
+func NewRestartConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration) func() bool {
 	return func() bool {
 		var cancel func()
 		var d dialog.Dialog
@@ -61,7 +61,7 @@ func NewRestartConfirmCallbackWithTimeout(win fyne.Window, defaultRestart bool, 
 			go func() {
 				<-ctx.Done()
 				d.Hide()
-				resp <- defaultRestart
+				resp <- true
 			}()
 		}
 		d = dialog.NewConfirm("Application Update", "The application was updated.\nDo you wish to restart it?\n", func(ok bool) {
