@@ -1,15 +1,44 @@
 # Fyne Selfupdate
 An extension of the `selfupdate` repository that handles certain Fyne integrations.
 
+## Simple setup for Fyne application
+
+If you want to add self update support to your Fyne application, you can just just add the following code
+```go
+	// Used `selfupdatectl create-keys` followed by `selfupdatectl print-key`
+	publicKey := ed25519.PublicKey{178, 103, 83, 57, 61, 138, 18, 249, 244, 80, 163, 162, 24, 251, 190, 241, 11, 168, 179, 41, 245, 27, 166, 70, 220, 254, 118, 169, 101, 26, 199, 129}
+
+	// The public key above match the signature of the below file served by our CDN
+	httpSource := selfupdate.NewHTTPSource(nil, "http://localhost/myprogram-{{.OS}}-{{.Arch}}{{.Ext}}")
+
+	config := fyneselfupdate.NewConfigWithTimeout(a, w, time.Duration(1)*time.Minute,
+		httpSource,
+		selfupdate.Schedule{FetchOnStart: true, Interval: time.Hour * time.Duration(12)},
+		publicKey)
+
+	_, err := selfupdate.Manage(config)
+	if err != nil {
+		log.Println("Error while setting up update manager: ", err)
+		return
+	}
+```
+
+For a better understanding of how to use `selfupdatectl` to help you manage your self updating Fyne application deployment you can read the documentation [here](https://github.com/fynelabs/selfupdate/tree/main/cmd/selfupdatectl)
+
 ## Callbacks
 
-You can use the confirm and progress callbacks provided here to present graphical
-status and request in your Fyne app.
+You can also use following callbacks and directly create your custom selfupdate.Config structure to adapt presented graphical element to your exact need in your Fyne app.
 
 ```go
-func NewConfirmCallback(fyne.Window)
+func NewUpgradeConfirmCallback(fyne.Window)
 
-func NewConfirmCallbackWithTimeout(fyne.Window, time.Duration)
+func NewUpgradeConfirmCallbackWithTimeout(fyne.Window, time.Duration)
+
+func NewRestartConfirmCallback(win fyne.Window)
+
+func NewRestartConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration)
 
 func NewProgressCallback(win fyne.Window)
+
+func NewExitCallback(app fyne.App, win fyne.Window)
 ```
