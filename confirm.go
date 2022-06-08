@@ -1,6 +1,7 @@
 package fyneselfupdate
 
 import (
+	"sync/atomic"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -20,19 +21,25 @@ func NewUpgradeConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration
 	return func(info string) bool {
 		var cancel func()
 		var d dialog.Dialog
+
+		var timeouted int32
+
 		resp := make(chan bool)
 		if timeout > 0 {
 			ctx, fn := context.WithTimeout(context.Background(), timeout)
 			cancel = fn
 			go func() {
 				<-ctx.Done()
+				atomic.StoreInt32(&timeouted, 1)
 				d.Hide()
-				resp <- true
 			}()
 		}
 		d = dialog.NewConfirm("Application Update", info+"\n\nDo you wish to update?\n", func(ok bool) {
 			if cancel != nil {
 				cancel()
+			}
+			if atomic.LoadInt32(&timeouted) == 1 {
+				ok = true
 			}
 			resp <- ok
 		}, win)
@@ -54,19 +61,25 @@ func NewRestartConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration
 	return func() bool {
 		var cancel func()
 		var d dialog.Dialog
+
+		var timeouted int32
+
 		resp := make(chan bool)
 		if timeout > 0 {
 			ctx, fn := context.WithTimeout(context.Background(), timeout)
 			cancel = fn
 			go func() {
 				<-ctx.Done()
+				atomic.StoreInt32(&timeouted, 1)
 				d.Hide()
-				resp <- true
 			}()
 		}
 		d = dialog.NewConfirm("Application Update", "The application was updated.\nDo you wish to restart it?\n", func(ok bool) {
 			if cancel != nil {
 				cancel()
+			}
+			if atomic.LoadInt32(&timeouted) == 1 {
+				ok = true
 			}
 			resp <- ok
 		}, win)
