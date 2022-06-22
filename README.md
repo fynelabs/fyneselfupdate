@@ -42,3 +42,13 @@ func NewProgressCallback(win fyne.Window)
 
 func NewExitCallback(app fyne.App, win fyne.Window)
 ```
+
+## API Compatibility Promises
+The main branch of `fyneselfupdate` is *not* guaranteed to have a stable API over time. Still we will try hard to not break its API unecessarily and will follow a proper versioning of our release. We will also keep it in sync and up to date with `fynelabs/selfupate`.
+
+The `fyneselfupdate` package makes the following promises about API compatibility:
+1. A list of all API-breaking changes will be documented in this README.
+1. `fyneselfupdate` will strive for as few API-breaking changes as possible.
+
+## License
+BSD 3-Clause
