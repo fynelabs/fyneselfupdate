@@ -1,4 +1,8 @@
 # Fyne Selfupdate
+
+[![godoc reference](https://godoc.org/github.com/fynelabs/fyneselfupdate?status.png)](https://godoc.org/github.com/fynelabs/selfupdate)
+[![Coverage Status](https://coveralls.io/repos/github/fynelabs/fyneselfupdate/badge.svg?branch=main)](https://coveralls.io/github/fynelabs/fyneselfupdate?branch=main)
+
 An extension of the `selfupdate` repository that handles certain Fyne integrations.
 
 ## Simple setup for Fyne application
@@ -52,3 +56,11 @@ The `fyneselfupdate` package makes the following promises about API compatibilit
 
 ## License
 BSD 3-Clause
+
+## Sponsors
+
+This project is kindly sponsored by the following companies:
+
+<a href="https://dentagraphics.com/" style="text-decoration: none">
+<img width="190" src="img/sponsor/dentagraphics.jpg" />
+</a>
