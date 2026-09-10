@@ -6,6 +6,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/lang"
 	"golang.org/x/net/context"
 )
 
@@ -34,7 +35,11 @@ func NewUpgradeConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration
 				d.Hide()
 			}()
 		}
-		d = dialog.NewConfirm("Application Update", info+"\n\nDo you wish to update?\n", func(ok bool) {
+		// info comes from the selfupdate package (e.g. "New version found) and is looked
+		// up as its own translation key via lang.L, with itself as fallback if no
+		// translation is found
+		message := lang.L(info) + "\n\n" + lang.L("Do you wish to update?") + "\n"
+		d = dialog.NewConfirm(lang.L("Application Update"), message, func(ok bool) {
 			if atomic.LoadInt32(&timedout) == 1 {
 				ok = true
 			}
@@ -74,7 +79,11 @@ func NewRestartConfirmCallbackWithTimeout(win fyne.Window, timeout time.Duration
 				d.Hide()
 			}()
 		}
-		d = dialog.NewConfirm("Application Update", "The application was updated.\nDo you wish to restart it?\n", func(ok bool) {
+
+		message := lang.L("The application was updated.") + "\n" +
+			lang.L("Do you wish to restart it?") + "\n"
+
+		d = dialog.NewConfirm(lang.L("Application Update"),message, func(ok bool) {
 			if atomic.LoadInt32(&timedout) == 1 {
 				ok = true
 			}

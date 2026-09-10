@@ -4,6 +4,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/lang"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -20,8 +21,8 @@ func NewProgressCallback(win fyne.Window) func(float64, error) {
 			} else {
 				progress = widget.NewProgressBar()
 			}
-			content := container.NewVBox(widget.NewLabel("Downloading update"), progress)
-			d = dialog.NewCustomWithoutButtons("Application update", content, win)
+			content := container.NewVBox(widget.NewLabel(lang.L("Downloading update")), progress)
+			d = dialog.NewCustomWithoutButtons(lang.L("Application update"), content, win)
 			fyne.Do(d.Show)
 		}
 

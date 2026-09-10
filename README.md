@@ -47,6 +47,45 @@ func NewProgressCallback(win fyne.Window)
 func NewExitCallback(app fyne.App, win fyne.Window)
 ```
 
+## Localization
+
+`fyneselfupdate` uses Fyne's standard [`lang`](https://docs.fyne.io/api/v2/lang/pkg/) package to
+translate the text shown in its dialogs (update confirmation, restart confirmation and the
+download progress window). No text is hardcoded to English only, everything goes through
+`lang.L`, so it will follow whatever locale your application has configured.
+
+Ready-made translation bundles for `fyneselfupdate`'s own strings are provided in the
+[`translations`](./translations) folder, named `fyneselfupdate.<lang>.json` (for example
+`fyneselfupdate.de.json`). Copy the ones you need into your own application and load them
+alongside your own translations:
+
+```go
+//go:embed translations/*.json
+var translationsFS embed.FS
+
+func main() {
+	a := app.New()
+	w := a.NewWindow("My App")
+
+	// Load fyneselfupdate's translations together with your own app's translations.
+	if err := lang.AddTranslationsFS(translationsFS, "translations"); err != nil {
+		log.Println("Failed to load translations:", err)
+	}
+
+	...
+}
+```
+
+The `<prefix>.` in the file name avoids collisions if your own application already has a
+`de.json`, `fr.json`, etc. in the same `translations` folder, just keep both files side by side.
+
+If a translation for the current locale is missing, `fyneselfupdate` falls back to the original
+English text, so adding localization support is entirely optional and backward compatible.
+
+Contributions of new language bundles for `fyneselfupdate` are welcome - please open a pull
+request adding a `fyneselfupdate.<lang>.json` file under `translations/`.
+
+
 ## API Compatibility Promises
 The main branch of `fyneselfupdate` is *not* guaranteed to have a stable API over time. Still we will try hard to not break its API unecessarily and will follow a proper versioning of our release. We will also keep it in sync and up to date with `fynelabs/selfupate`.
 
