@@ -1,4 +1,4 @@
-module github.com/fynelabs/fyneselfupdate
+module github.com/olegmlsn/fyneselfupdate
 
 go 1.17
 
